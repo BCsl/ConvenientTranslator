@@ -1,5 +1,8 @@
 package com.hellocsl.translator.quicklytranslator;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,12 +12,27 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.hellocsl.translator.quicklytranslator.service.ListenClipboardService;
+
+/**
+ * @author HelloCsl(cslgogogo@gmail.com)
+ *         1.自动翻译
+ *         2.流量数据选择
+ *         3.显示时间设置
+ *         4.语言选择
+ */
 public class MainActivity extends AppCompatActivity {
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ListenClipboardService.start(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,13 +55,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_exit) {
+            ListenClipboardService.stopService(this);
+            finish();
+            return true;
+        } else if (id == R.id.action_about) {
+            String url = "https://github.com/BCsl/QuicklyTranslator";
+            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(myIntent);
             return true;
         }
 
