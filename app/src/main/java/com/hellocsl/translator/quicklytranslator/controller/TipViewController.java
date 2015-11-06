@@ -43,8 +43,7 @@ public final class TipViewController extends DefaultSubscriber<String> implement
 
         mLayoutParams.format = PixelFormat.TRANSLUCENT;
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-                | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
+                | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
     }
 
     public void setViewDismissHandler(ViewDismissHandler viewDismissHandler) {
@@ -88,6 +87,23 @@ public final class TipViewController extends DefaultSubscriber<String> implement
         if (mWholeView.getParent() != null) {
             mWindowManager.removeView(mWholeView);
         }
+        mWholeView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getActionMasked();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        mResultView.removeCallbacks(mDismissTask);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        mResultView.postDelayed(mDismissTask, DEFAULT_SHOW_TIME);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        break;
+                }
+                return false;
+            }
+        });
         mWindowManager.addView(mWholeView, mLayoutParams);
 //        mResultView.postDelayed(mDismissTask, DEFAULT_SHOW_TIME);
         actionTranslating();

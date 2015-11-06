@@ -1,5 +1,6 @@
 package com.hellocsl.translator.quicklytranslator.service;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -85,12 +86,15 @@ public final class ListenClipboardService extends Service implements TipViewCont
                         .setContentTitle(getString(R.string.app_name))
                         .setContentText(getString(R.string.app_is_running));
         Intent resultIntent = MainActivity.newIntent(this);
-        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_NO_CREATE);
         builder.setContentIntent(resultPendingIntent);
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATIONID, builder.build());
+        Notification notification = builder.build();
+        notification.flags = Notification.FLAG_NO_CLEAR;
+        notificationManager.notify(NOTIFICATIONID, notification);
     }
 
     private void cancelAppNotification() {
