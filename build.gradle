@@ -11,6 +11,15 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.4'
 }
@@ -20,6 +29,3 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}

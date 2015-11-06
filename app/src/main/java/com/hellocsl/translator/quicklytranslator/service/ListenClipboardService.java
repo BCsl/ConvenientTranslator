@@ -12,12 +12,13 @@ import android.text.TextUtils;
 
 import com.hellocsl.translator.quicklytranslator.MainActivity;
 import com.hellocsl.translator.quicklytranslator.R;
-import com.hellocsl.translator.quicklytranslator.TipViewController;
+import com.hellocsl.translator.quicklytranslator.controller.TipViewController;
 import com.hellocsl.translator.quicklytranslator.clipboard.ClipboardManagerCompat;
 import com.hellocsl.translator.quicklytranslator.receiver.BootCompletedReceiver;
+import com.hellocsl.translator.quicklytranslator.utils.L;
 
 public final class ListenClipboardService extends Service implements TipViewController.ViewDismissHandler {
-
+    private final String TAG = this.getClass().getSimpleName();
     private static final String KEY_FOR_WEAK_LOCK = "weak-lock";
     private static final String KEY_FOR_CMD = "cmd";
     private static final String KEY_FOR_CONTENT = "content";
@@ -38,6 +39,7 @@ public final class ListenClipboardService extends Service implements TipViewCont
         Intent serviceIntent = new Intent(context, ListenClipboardService.class);
         context.startService(serviceIntent);
     }
+
     public static void stopService(Context context) {
         Intent serviceIntent = new Intent(context, ListenClipboardService.class);
         context.stopService(serviceIntent);
@@ -57,6 +59,8 @@ public final class ListenClipboardService extends Service implements TipViewCont
 
     @Override
     public void onCreate() {
+        super.onCreate();
+        L.d(TAG, "onCreate");
         mClipboardWatcher = ClipboardManagerCompat.create(this);
         mClipboardWatcher.addPrimaryClipChangedListener(mOnPrimaryClipChangedListener);
     }
@@ -64,6 +68,7 @@ public final class ListenClipboardService extends Service implements TipViewCont
     @Override
     public void onDestroy() {
         super.onDestroy();
+        L.d(TAG, "onDestroy");
         cancelAppNotification();
         mClipboardWatcher.removePrimaryClipChangedListener(mOnPrimaryClipChangedListener);
         sLastContent = null;
@@ -96,6 +101,7 @@ public final class ListenClipboardService extends Service implements TipViewCont
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        L.d(TAG, "onStartCommand");
         if (intent != null) {
             showAppNotification();
             // remove wake lock

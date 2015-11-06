@@ -3,33 +3,25 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
-             android:background="#77000000">
+             android:background="#fff"
+             android:padding="15dp">
 
-    <FrameLayout
-        android:id="@+id/pop_view_content_view"
-        android:layout_width="match_parent"
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#fff"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="15dp">
+        android:layout_gravity="center"
+        android:indeterminate="true"/>
 
-        <ProgressBar
-            style="@style/Base.Widget.AppCompat.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"/>
-
-        <TextView
-            android:id="@+id/pop_view_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="left"
-            android:textColor="#000"
-            android:textSize="14sp"
-            tools:text="result"/>
-    </FrameLayout>
-
+    <TextView
+        android:id="@+id/tv_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="left"
+        android:textColor="#000"
+        android:textSize="14sp"
+        tools:text="result"/>
 </FrameLayout>
